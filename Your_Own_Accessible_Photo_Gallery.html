@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interactive Photo Gallery</title>
+    <style>
+        #image {
+            width: 400px;
+            height: 300px;
+            border: 2px solid black;
+            background-image: url('');
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .thumb {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            margin: 5px;
+            outline: none;
+        }
+
+        .tabfocus {
+            outline: 3px solid orange;
+        }
+    </style>
+</head>
+
+<body onload="addTabFocus()">
+
+    <h1>Interactive Photo Gallery</h1>
+    <h2>Hover, focus or keyboard tab through the images</h2>
+
+    <div id="image">Hover over, or focus on, an image below to display here.</div>
+
+    <!-- 6 images, alt text rõ ràng -->
+    <img class="thumb" src="https://picsum.photos/id/1015/100/100" alt="Mountain View" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+    <img class="thumb" src="https://picsum.photos/id/1016/100/100" alt="Forest Path" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+    <img class="thumb" src="https://picsum.photos/id/1018/100/100" alt="Calm Lake" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+    <img class="thumb" src="https://picsum.photos/id/1024/100/100" alt="Desert Dunes" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+    <img class="thumb" src="https://picsum.photos/id/1025/100/100" alt="Ocean Waves" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+    <img class="thumb" src="https://picsum.photos/id/1031/100/100" alt="City Skyline" onmouseover="upDate(this)"
+        onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()" tabindex="0" />
+
+    <script>
+        function upDate(previewPic) {
+            console.log('Event triggered on:', previewPic.alt);
+            const imageDiv = document.getElementById('image');
+            imageDiv.textContent = previewPic.alt;
+            imageDiv.style.backgroundImage = `url('${previewPic.src}')`;
+        }
+
+        function undo() {
+            const imageDiv = document.getElementById('image');
+            imageDiv.style.backgroundImage = "url('')";
+            imageDiv.textContent = "Hover over, or focus on, an image below to display here.";
+        }
+
+        function addTabFocus() {
+            console.log('addTabFocus triggered: setting tabindex and event listeners');
+            const thumbs = document.querySelectorAll('.thumb');
+            for (let i = 0; i < thumbs.length; i++) {
+                thumbs[i].setAttribute('tabindex', '0');
+                // Đây là ví dụ, sự kiện onfocus/onblur đã có trên HTML rồi
+                // Nếu muốn có thể thêm sự kiện JS thuần tại đây cũng được:
+                thumbs[i].addEventListener('focus', () => {
+                    console.log('Focused:', thumbs[i].alt);
+                    upDate(thumbs[i]);
+                });
+                thumbs[i].addEventListener('blur', () => {
+                    console.log('Blurred:', thumbs[i].alt);
+                    undo();
+                });
+            }
+        }
+    </script>
+
+</body>
+
+</html>
